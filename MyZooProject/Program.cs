@@ -1,4 +1,6 @@
-﻿namespace MyZooProject
+﻿using System;
+
+namespace MyZooProject
 {
     public class Program
     {
@@ -8,9 +10,9 @@
             Zoo zoo = new Zoo();
             string? name;
 
-            while(true)
+            while (true)
             {
-                Console.WriteLine("\n"+"""
+                Console.WriteLine("\n" + """
                 *** Interface ***
                 1.Add new lion
                 2.Feed the animals
@@ -33,19 +35,47 @@
                             break;
 
                         case 2:
-                            foreach (IAnimal animal in zoo.GetAllAnimals())
+                            if (zoo.GetHungryAnimals().Count != 0)
                             {
-                                animal.Eat();
-                                Console.WriteLine($"The animal {animal.Name} ate! >u<");
+                                var hungryAnimals = zoo.GetHungryAnimals();
+
+                                Console.WriteLine("List of animals that want to eat:");
+                                for (int i = 1; i <= hungryAnimals.Count; i++)
+                                {
+                                    Console.WriteLine($"{i}){hungryAnimals[i - 1].Name}");
+                                }
+
+                                Console.Write("Select an animal: ");
+                                input = Console.ReadLine();
+                                if (int.TryParse(input, out int index) && index >= 1 && index <= hungryAnimals.Count)
+                                {
+                                    hungryAnimals[index - 1].Eat();
+                                    Console.WriteLine($"{hungryAnimals[index - 1].Name} ate! >u<");
+                                }
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("There are no hungry animals left :)");
+                                break;
                             }
                             break;
 
                         case 3:
-                            foreach(IAnimal animal in zoo.GetAllAnimals())
+                            if (zoo.GetAllAnimals().Count != 0)
                             {
-                                Console.WriteLine(animal.Name);
+                                Console.WriteLine("List of animals:");
+                                for (int i = 1; i <= zoo.GetAllAnimals().Count; i++)
+                                {
+                                    Console.WriteLine($"{i}){zoo.GetAllAnimals()[i - 1].Name}");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("There are no animals at the zoo yet :(");
                             }
                             break;
+                        case 4: return;
                     }
 
                 }
@@ -54,7 +84,7 @@
                     Console.WriteLine("I received an incorrect response!");
                 }
             }
-    
+
         }
     }
 }

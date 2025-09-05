@@ -14,10 +14,21 @@ namespace MyZooProject
         {
             animals.Add(animal);
         }
-        public IReadOnlyList<IAnimal> GetAllAnimals() 
+        public IReadOnlyList<IAnimal> GetAllAnimals()
         {
             return animals.AsReadOnly();
         }
-
+        public List<IAnimal> GetHungryAnimals()
+        {
+            List<IAnimal> hungryAnimals = new List<IAnimal>();
+            foreach (IAnimal animal in animals)
+            {
+                if(animal.Energy < 55)
+                {
+                    hungryAnimals.Add(animal);
+                }
+            }
+            return hungryAnimals;
+        }
     }
 }
